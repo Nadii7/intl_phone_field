@@ -43,8 +43,8 @@ class _MyAppState extends State<MyApp> {
                     showDropdownIcon: false,
                     initialCountryCode: 'EG',
                     controller: TextEditingController(),
-                    onTapOutside: (p0) => focusNode.unfocus(),
                     onChanged: (phone) => print(phone.completeNumber),
+                    onTapOutside: (p0) => FocusManager.instance.primaryFocus?.unfocus(),
                     onCountryChanged: (country) => print('Country changed to: ${country.name}'),
                     decoration: const InputDecoration(
                       labelText: 'Phone Number',

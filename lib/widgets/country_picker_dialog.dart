@@ -77,36 +77,34 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
     return Padding(
       padding: widget.style?.padding ?? const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: TextField(
-              cursorColor: widget.style?.searchFieldCursorColor,
-              decoration: widget.style?.searchFieldInputDecoration ??
-                  InputDecoration(
-                    suffixIcon: const Icon(Icons.search),
-                    labelText: widget.searchText,
-                  ),
-              onChanged: (value) {
-                _filteredCountries = widget.countryList.stringSearch(value)
-                  ..sort(
-                    (a, b) => a.localizedName(widget.languageCode).compareTo(b.localizedName(widget.languageCode)),
-                  );
-                if (mounted) setState(() {});
-              },
-            ),
+          TextField(
+            cursorColor: widget.style?.searchFieldCursorColor,
+            decoration: widget.style?.searchFieldInputDecoration ??
+                InputDecoration(
+                  suffixIcon: const Icon(Icons.search),
+                  labelText: widget.searchText,
+                ),
+            onChanged: (value) {
+              _filteredCountries = widget.countryList.stringSearch(value)
+                ..sort(
+                  (a, b) => a.localizedName(widget.languageCode).compareTo(b.localizedName(widget.languageCode)),
+                );
+              if (mounted) setState(() {});
+            },
           ),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 2),
               itemCount: _filteredCountries.length,
               itemBuilder: (ctx, index) => Column(
                 children: <Widget>[
                   ListTile(
                     dense: true,
-                    horizontalTitleGap: 0,
+                    horizontalTitleGap: 10,
                     contentPadding: widget.style?.listTilePadding,
                     leading: Flag.fromString(_filteredCountries[index].code, height: 20, width: 25, fit: BoxFit.fill),
                     title: Text(
@@ -123,7 +121,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                       Navigator.of(context).pop();
                     },
                   ),
-                  widget.style?.listTileDivider ?? const Divider(thickness: 1),
+                  widget.style?.listTileDivider ?? const Divider(thickness: 0.5),
                 ],
               ),
             ),
