@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_field.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   FocusNode focusNode = FocusNode();
 
@@ -21,64 +23,37 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Phone Field Example'),
+          title: const Text('Phone Field Example'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 30),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(),
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: PhoneField(
+                    codeSpace: 1,
+                    flagSpace: 10,
+                    languageCode: "ar",
+                    focusNode: focusNode,
+                    showDropdownIcon: false,
+                    initialCountryCode: 'EG',
+                    controller: TextEditingController(),
+                    onTapOutside: (p0) => focusNode.unfocus(),
+                    onChanged: (phone) => print(phone.completeNumber),
+                    onCountryChanged: (country) => print('Country changed to: ${country.name}'),
+                    decoration: const InputDecoration(
+                      labelText: 'Phone Number',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                IntlPhoneField(
-                  focusNode: focusNode,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                  ),
-                  languageCode: "en",
-                  onChanged: (phone) {
-                    print(phone.completeNumber);
-                  },
-                  onCountryChanged: (country) {
-                    print('Country changed to: ' + country.name);
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                MaterialButton(
-                  child: Text('Submit'),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    _formKey.currentState?.validate();
-                  },
                 ),
               ],
             ),
