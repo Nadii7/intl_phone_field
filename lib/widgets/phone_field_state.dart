@@ -79,7 +79,7 @@ class PhoneFieldState extends State<PhoneField> {
       builder: (context) => StatefulBuilder(
         builder: (ctx, setState) => CountryPickerDialog(
           countryList: _countryList,
-          searchText: widget.searchText,
+          noResults: widget.noResults,
           style: widget.pickerDialogStyle,
           selectedCountry: _selectedCountry,
           filteredCountries: filteredCountries,

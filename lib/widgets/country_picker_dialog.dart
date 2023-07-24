@@ -1,8 +1,7 @@
 import 'package:flag/flag.dart';
+import '../models/country.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/helpers/helpers.dart';
-
-import '../models/country.dart';
 
 class PickerDialogStyle {
   final TextStyle? countryCodeStyle;
@@ -37,20 +36,20 @@ class CountryPickerDialog extends StatefulWidget {
   final List<Country> countryList;
   final Country selectedCountry;
   final ValueChanged<Country> onCountryChanged;
-  final String searchText;
   final List<Country> filteredCountries;
   final PickerDialogStyle? style;
   final String languageCode;
+  final String? noResults;
 
   const CountryPickerDialog({
     Key? key,
-    required this.searchText,
     required this.languageCode,
     required this.countryList,
     required this.onCountryChanged,
     required this.selectedCountry,
     required this.filteredCountries,
     this.style,
+    this.noResults,
   }) : super(key: key);
 
   @override
@@ -80,12 +79,9 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
+            autofocus: true,
             cursorColor: widget.style?.searchFieldCursorColor,
-            decoration: widget.style?.searchFieldInputDecoration ??
-                InputDecoration(
-                  suffixIcon: const Icon(Icons.search),
-                  labelText: widget.searchText,
-                ),
+            decoration: widget.style?.searchFieldInputDecoration,
             onChanged: (value) {
               _filteredCountries = widget.countryList.stringSearch(value)
                 ..sort(
@@ -96,35 +92,38 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              itemCount: _filteredCountries.length,
-              itemBuilder: (ctx, index) => Column(
-                children: <Widget>[
-                  ListTile(
-                    dense: true,
-                    horizontalTitleGap: 10,
-                    contentPadding: widget.style?.listTilePadding,
-                    leading: Flag.fromString(_filteredCountries[index].code, height: 20, width: 25, fit: BoxFit.fill),
-                    title: Text(
-                      _filteredCountries[index].localizedName(widget.languageCode),
-                      style: widget.style?.countryNameStyle ?? const TextStyle(fontWeight: FontWeight.w600),
+            child: _filteredCountries.isNotEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    itemCount: _filteredCountries.length,
+                    itemBuilder: (ctx, index) => Column(
+                      children: <Widget>[
+                        ListTile(
+                          dense: true,
+                          horizontalTitleGap: 10,
+                          contentPadding: widget.style?.listTilePadding,
+                          leading:
+                              Flag.fromString(_filteredCountries[index].code, height: 20, width: 25, fit: BoxFit.fill),
+                          title: Text(
+                            _filteredCountries[index].localizedName(widget.languageCode),
+                            style: widget.style?.countryNameStyle ?? const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          trailing: Text(
+                            '+${_filteredCountries[index].dialCode}',
+                            style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          onTap: () {
+                            _selectedCountry = _filteredCountries[index];
+                            widget.onCountryChanged(_selectedCountry);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        widget.style?.listTileDivider ?? const Divider(thickness: 0.5),
+                      ],
                     ),
-                    trailing: Text(
-                      '+${_filteredCountries[index].dialCode}',
-                      style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    onTap: () {
-                      _selectedCountry = _filteredCountries[index];
-                      widget.onCountryChanged(_selectedCountry);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  widget.style?.listTileDivider ?? const Divider(thickness: 0.5),
-                ],
-              ),
-            ),
+                  )
+                :  Center(child: Text(widget.noResults??'No Results')),
           ),
         ],
       ),

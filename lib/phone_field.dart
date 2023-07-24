@@ -21,7 +21,7 @@ class PhoneField extends StatefulWidget {
   final Function(PointerDownEvent)? onTapOutside;
 
   final bool readOnly;
-  
+
   final FormFieldSetter<PhoneNumber>? onSaved;
 
   final ValueChanged<PhoneNumber>? onChanged;
@@ -52,6 +52,8 @@ class PhoneField extends StatefulWidget {
 
   final TextStyle? style;
 
+  final String? noResults;
+
   final bool disableLengthCheck;
 
   final bool showDropdownIcon;
@@ -61,8 +63,6 @@ class PhoneField extends StatefulWidget {
   final TextStyle? dropdownTextStyle;
 
   final List<TextInputFormatter>? inputFormatters;
-
-  final String searchText;
 
   final IconPosition dropdownIconPosition;
 
@@ -106,6 +106,7 @@ class PhoneField extends StatefulWidget {
 
   const PhoneField({
     Key? key,
+    this.noResults,
     this.flagSpace,
     this.codeSpace,
     this.backgroundColor,
@@ -138,7 +139,6 @@ class PhoneField extends StatefulWidget {
     this.inputFormatters,
     this.enabled = true,
     this.keyboardAppearance,
-    @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead') this.searchText = 'Search country',
     this.dropdownIconPosition = IconPosition.leading,
     this.dropdownIcon = const Icon(Icons.arrow_drop_down),
     this.autofocus = false,

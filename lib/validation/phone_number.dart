@@ -43,12 +43,8 @@ class PhoneNumber {
 
   bool isValidNumber() {
     Country country = getCountry(completeNumber);
-    if (number.length < country.minLength) {
-      throw NumberTooShortException();
-    }
-
-    if (number.length > country.maxLength) {
-      throw NumberTooLongException();
+    if (number.trim().isEmpty || number.length < country.minLength || number.length > country.maxLength) {
+      return false;
     }
     return true;
   }
@@ -57,7 +53,6 @@ class PhoneNumber {
     return countryCode + number;
   }
 
-  
   static Country getCountry(String phoneNumber) {
     if (phoneNumber == "") {
       throw NumberTooShortException();

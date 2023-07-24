@@ -13,10 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-
-  FocusNode focusNode = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,36 +23,32 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: PhoneField(
-                    codeSpace: 1,
-                    flagSpace: 10,
-                    languageCode: "ar",
-                    focusNode: focusNode,
-                    showDropdownIcon: false,
-                    initialCountryCode: 'EG',
-                    controller: TextEditingController(),
-                    onChanged: (phone) => print(phone.completeNumber),
-                    onTapOutside: (p0) => FocusManager.instance.primaryFocus?.unfocus(),
-                    onCountryChanged: (country) => print('Country changed to: ${country.name}'),
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(),
-                      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: PhoneField(
+                  codeSpace: 1,
+                  flagSpace: 10,
+                  languageCode: "ar",
+                  showDropdownIcon: false,
+                  initialCountryCode: 'EG',
+                  controller: TextEditingController(),
+                  onChanged: (phone) => print(phone.completeNumber),
+                  onTapOutside: (p0) => FocusManager.instance.primaryFocus?.unfocus(),
+                  onCountryChanged: (country) => print('Country changed to: ${country.name}'),
+                  decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
