@@ -43,7 +43,9 @@ class PhoneNumber {
 
   bool isValidNumber() {
     Country country = getCountry(completeNumber);
-    if (number.trim().isEmpty || number.length < country.minLength || number.length > country.maxLength) {
+    if (number.trim().isEmpty ||
+        number.length < country.minLength + (number.startsWith('0') ? 1 : 0) ||
+        number.length > country.maxLength + (number.startsWith('0') ? 1 : 0)) {
       return false;
     }
     return true;
